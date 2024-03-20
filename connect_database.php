@@ -1,8 +1,8 @@
 <?php
 
-// CODE FROM LECTURE SLIDE: WEEK 5 PART 2
+// CODE FROM LECTURE SLIDE: WEEK 5 PART 2 (cite this in the project report I guess)
 $dbName = "cp476_db";
-$dsn = "mysql:host=localhost;dbname=cp476_db;charset=utf8mb4"; // CP476_DB is the name of the database to connect to
+$dsn = "mysql:host=localhost;dbname=cp476_db;charset=utf8mb4"; // cp476_db is the name of the database to connect to
 $options = [
 PDO::ATTR_EMULATE_PREPARES => false, // turn off emulation mode
 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
@@ -16,7 +16,7 @@ try {
     $conn = new PDO($dsn, "root", $password, $options);
 } catch (PDOException $e) {
     error_log($e->getMessage());
-    exit('Something wrong');
+    exit("Something wrong");
 }
 
 echo "Connected successfully to database: " . $dbName . "\n";
