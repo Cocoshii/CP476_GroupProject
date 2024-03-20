@@ -12,7 +12,9 @@
 <div class="centerText"><h1>Welcome. Please login with your credentials:</h1></div>
 
 <!-- User login inputs -->
-<form>
+<!-- Note that localhost will have to be changed to an actual server name that we can run this program on
+so the prof can test it -->
+<form action="http://localhost/handleLogin.php" method="POST"> 
 
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username"><br>
