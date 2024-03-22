@@ -1,0 +1,17 @@
+/* Re-engineerin reference: https://stackoverflow.com/questions/15300234/how-can-i-horizontally-center-a-button-element-in-a-div-element <- CITE */
+
+/* Class for centering text */
+.centerText {
+    text-align: center;
+}
+
+/* Class for centering buttons */
+button {
+    width: 500px;
+    height: 75px;
+    font-size: 20px;
+    text-align: center; /* Align text to the middle of each button */
+    /* Center position of buttons in middle of webpage */
+    margin:0 auto;
+    display:block;
+}

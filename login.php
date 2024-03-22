@@ -65,7 +65,7 @@ function validateLogin($username, $password){
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="loginClasses.css"> <!-- Link to CSS file -->
+    <link rel="stylesheet" href="html_classes.css"> <!-- Link to CSS file -->
 </head>
 
 <body>
@@ -74,13 +74,7 @@ function validateLogin($username, $password){
 <div class="centerText"><h1>Welcome. Please login with your credentials:</h1></div>
 
 <!-- User login inputs -->
-<!-- Note that localhost will have to be changed to an actual server name that we can run this program on
-so the prof can test it -->
-<!-- Also technically, action="handleLogin.php" should work and execute but for some reason, it instead
-takes the user to the file code itself. It doesn't execute the code at all. So putting the full localhost URL is
-a workaround for now.-->
 
-<!-- <form action="http://localhost/handleLogin.php" method="POST">  -->
 <form method="POST">
 
     <label for="username">Username:</label><br>
