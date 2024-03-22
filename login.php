@@ -4,11 +4,13 @@ session_start();
 
 // Code re-engineering reference:
 // https://www.w3schools.com/php/php_form_required.asp <-- CITE THIS IN PROJECT REPORT
+// https://www.w3schools.com/html/html_forms.asp <-- CITE THIS IN PROJECT REPORT
 
 
 // Error handling variables
 $usernameError = "";
 $passwordError = "";
+$loginError = "";
 
 // Username and password fields cannot be left blank. Most values must also be valid.
 
@@ -22,9 +24,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user en
         $passwordError = "Password is required";
 
     if (empty($usernameError) && empty($passwordError)){
-        header("Location: verifyLogin.php");
-        exit();
+        // If values were entered, execute the validateLogin() function
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+        if (validateLogin($username, $password) == true){
+            header("Location: homepage.html");
+        } else {
+            $loginError = "Failed to login. Username or password incorrect.";
+        }
+        // header("Location: verifyLogin.php");
+        // exit();
     }
+
+}
+
+function validateLogin($username, $password){
+    // Ensure that the provided user-provided username and password are valid MySQL entries that can connect to the database
+    $dbName = "cp476_db";
+    $dsn = "mysql:host=localhost;dbname=$dbName;charset=utf8mb4"; // cp476_db is the name of the database to connect to
+    try {
+        // $conn = new PDO($dsn, $username, $password, $options);
+        $conn = new PDO($dsn, $username, $password);
+    
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        // exit("Failed to login. Username or password incorrect.");
+        return false;
+    
+    }
+
+    return true;
 
 }
 
@@ -56,13 +85,14 @@ a workaround for now.-->
 
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username">
-    <span class="error">* <?php echo $usernameError;?></span><br>
+    <span class="error" style="color:red;">* <?php echo $usernameError;?></span><br>
 
     <label for="password">Password:</label><br>
     <input type="password" id="password" name="password">
-    <span class="error">* <?php echo $passwordError;?></span><br>
+    <span class="error" style="color:red;">* <?php echo $passwordError;?></span><br>
 
     <input type="submit" value="Submit">
+    <span class="error" style="color:red;">* <?php echo $loginError;?></span><br>
 
 </form>
 </body>
