@@ -9,14 +9,14 @@ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exc
 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
 ];
 try {
-    $password = "insert your password here"; // REPLACE WITH YOUR MYSQL PASSWORD BEFORE RUNNING FILE
+    $password = "Please enter your password: "; // REPLACE WITH YOUR MYSQL PASSWORD BEFORE RUNNING FILE
     // Note: When editing this and committing changes, it's best to update $password back to a placeholder string
     // if you don't want others to see your password here.
 
     $conn = new PDO($dsn, "root", $password, $options);
 } catch (PDOException $e) {
     error_log($e->getMessage());
-    exit("Something wrong");
+    exit("Could not connect to database: exiting program...");
 }
 
 echo "Connected successfully to database: " . $dbName . "\n";
