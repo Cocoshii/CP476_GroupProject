@@ -63,6 +63,6 @@ echo "NameTable populated with data from NameFile.txt successfully.<br>";
 insertData($courseData, "course", $conn);
 echo "CourseTable populated with data from CourseFile.txt successfully.<br>";
 
-$conn = null; // close connection. Will be reopened by re-including $connect_database.php in the necessary file
+// $conn = null; // close connection. Will be reopened by re-including $connect_database.php in the necessary file
 
 ?>

@@ -34,18 +34,20 @@ The [where attribute = value] is optional. The condition is typed in manually in
 an alert saying the query is invalid, if the user enters their condition incorrectly.
 */
 
-session_start();
 
-// connect to database (include)
+// RE-ENGINEERING REFERENCE:
+// - Lecture slides week 5 part 2
+// - https://stackoverflow.com/questions/31527781/printing-pdo-query-results
+// - https://www.w3schools.com/php/php_mysql_select.asp
+
+
+
+ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
 include("connect_database.php");
+include("populate_database.php");
+ob_end_clean(); // stops blocking output
 
-
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once query form is submitted on user end, run this code
-    
-
-}
+session_start();
 
 
 ?>
@@ -85,3 +87,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once query form is submitted on u
 </body>
 </html>
 
+<?php
+// The following query execution code below is placed below the above HTML code so that the table results
+// will be placed below the query input section.
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once query form is submitted on user end, run this code
+    // Gets the entire string inputted by the user in the text field and attempts to run the query
+    // Syntax errors are prevalant though with manual input. An alert will be issued to the user of incorrect syntax when this is occurs.
+    if (!empty($_POST["query"])){
+        try {
+            $sqlInput = $_POST["query"];
+            $stmt = $conn->query($sqlInput); // stmt --> "statement"
+            showResults($stmt);
+
+        } catch(PDOException $e) {
+            // echo $sql . "\r\n" . $e->getMessage();
+            $errorMsg = "Incorrect query syntax. Please review your input and follow the provided query syntax.";
+            echo "<script>alert('$errorMsg');</script>";
+        }
+    }
+
+}
+
+function showResults($stmt){ // show query results from a successful SELECT ... statement
+    echo "<br>";
+    echo "<center>";
+    echo "<table border='1'>";
+    echo "<tr>";
+    for ($i = 0; $i < $stmt->columnCount(); $i++) {
+        $col = $stmt->getColumnMeta($i);
+        echo "<th>{$col['name']}</th>";
+    }
+    echo "</tr>";
+    // Display each row fetched from the query results
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        echo "<tr>";
+        foreach ($row as $value) {
+            echo "<td>{$value}</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</table>";
+    echo "</center>";
+}
+
+
+?>

@@ -6,6 +6,10 @@ session_start();
 // https://www.w3schools.com/php/php_form_required.asp <-- CITE THIS IN PROJECT REPORT
 // https://www.w3schools.com/html/html_forms.asp <-- CITE THIS IN PROJECT REPORT
 
+ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
+include("connect_database.php");
+include("populate_database.php");
+ob_end_clean(); // stops blocking output
 
 // Error handling variables
 $usernameError = "";
