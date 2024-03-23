@@ -115,7 +115,7 @@ function showResults($stmt){ // show query results from a successful SELECT ... 
     echo "<center>";
     echo "<table border='1'>";
     echo "<tr>";
-    for ($i = 0; $i < $stmt->columnCount(); $i++) {
+    for ($i = 0; $i < $stmt->columnCount(); $i++) { // display table attribute names (columns)
         $col = $stmt->getColumnMeta($i);
         echo "<th>{$col['name']}</th>";
     }
