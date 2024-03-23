@@ -9,7 +9,7 @@ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exc
 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
 ];
 try {
-    $password = "Please enter your password: "; // REPLACE WITH YOUR MYSQL PASSWORD BEFORE RUNNING FILE
+    $password = "C3u21t20e5<33"; // REPLACE WITH YOUR MYSQL PASSWORD BEFORE RUNNING FILE
     // Note: When editing this and committing changes, it's best to update $password back to a placeholder string
     // if you don't want others to see your password here.
 
@@ -20,6 +20,19 @@ try {
 }
 
 echo "Connected successfully to database: " . $dbName . "\n";
+
+// Initialize database if it has not already been initialized
+$sqlFile = "init_database.sql";
+$sql = file_get_contents($sqlFile);
+
+// Execute SQL from the file
+try {
+    $conn->exec($sql);
+    echo "Tables created successfully";
+}  catch(PDOException $e) {
+    echo $sql . '\r\n'. $e->getMessage();
+}
+
 
 $conn=null; // close connection
 
