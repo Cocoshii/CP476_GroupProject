@@ -1,6 +1,6 @@
 <?php
 // Initiate login session
-session_start();
+// session_start();
 
 // Code re-engineering reference:
 // https://www.w3schools.com/php/php_form_required.asp <-- CITE THIS IN PROJECT REPORT
