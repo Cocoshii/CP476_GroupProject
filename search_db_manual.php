@@ -66,8 +66,6 @@ session_start();
 <!-- Welcome heading -->
 <div class="centerText"><h1>Search Database</h1></div>
 
-<!-- User login inputs -->
-
 <form method="POST">
     <!-- Choose between simplified or manual mode user input mode: -->
     <div class="centerText"><label for="simplified" style="font-size: 20px;">Simplified input</label>

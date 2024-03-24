@@ -42,7 +42,8 @@ try {
     $conn->exec($sql);
     echo "New tables created successfully<br>";
 }  catch(PDOException $e) {
-    echo $sql . '\r\n'. $e->getMessage();
+    // echo $sql . '\r\n'. $e->getMessage();
+    echo '\r\n'. $e->getMessage();
 }
 
 
