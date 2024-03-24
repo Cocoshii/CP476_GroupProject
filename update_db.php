@@ -15,32 +15,9 @@ ob_end_clean(); // stops blocking output
 
 session_start();
 
-// Verify condition input
 $setError = "";
 $conditionError = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user end, run this code
-    if (empty($_POST["newValues"]))  // if user submits while SET field is empty
-        $setError = "SET input field is required.";
-
-    if (empty($_POST["condition"])) // if user submits while WHERE field is empty
-        $conditionError = "WHERE input field is required";
-
-    // if (empty($usernameError) && empty($passwordError)){
-    //     // If values were entered, execute the validateLogin() function
-    //     $username = $_POST["username"];
-    //     $password = $_POST["password"];
-    //     if (validateLogin($username, $password) == true){
-    //         header("Location: homepage.html");
-    //     } else {
-    //         $loginError = "Failed to login. Username or password incorrect.";
-    //     }
-    //     // header("Location: verifyLogin.php");
-    //     // exit();
-    // }
-
-}
-
+$updateError = "";
 
 ?>
 
@@ -75,7 +52,7 @@ WHERE (condition, manually typed in) -->
     For example:<br>
     <b>UPDATE FinalGrades<br>
     SET FinalGrade = 69.3<br>
-    WHERE studentID = 12345678</b><br>
+    WHERE studentID = 123456789</b><br>
     </div></p><br>
 
     <p>UPDATE
@@ -96,10 +73,70 @@ WHERE (condition, manually typed in) -->
     
     </p>
 
-    <br><input type="submit" value="Execute update">
+    <br><input type="submit" value="Execute update"><br>
+    <br><span class="error" style="color:red;"> <?php echo $updateError;?></span><br></div>
 
 
 </form>
 </body>
 </html>
 
+<?php
+
+// Verify condition input
+$setError = "";
+$conditionError = "";
+$updateError = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user end, run this code
+    if (empty($_POST["newValues"]))  // if user submits while SET field is empty
+        $setError = "SET input field is required.";
+
+    if (empty($_POST["condition"])) // if user submits while WHERE field is empty
+        $conditionError = "WHERE input field is required";
+
+    if (empty($setError) && empty($conditionError)){
+        // If values were entered, execute the executeUpdate() function
+        $tableName = $_POST["tableMenu"];
+        $newValues = $_POST["newValues"];
+        $condition = $_POST["condition"];
+        $updateStatus = executeUpdate($tableName, $newValues, $condition, $conn);
+        if ($updateStatus == false) // if entry/entries deletion was unsuccessful...
+            $updateError = "Failed to update. Please review your syntax as well as the existence of the entered attributes and values.";
+     
+        // header("Location: verifyLogin.php");
+        // exit();
+    }
+
+}
+
+function executeUpdate($tableName, $newValues, $condition, $conn){
+    try {
+        // Split the newValues input into separate parts
+        $newValueParts = explode(",", $newValues);
+
+        // Construct the SET clause of the SQL query
+        $setClause = "";
+        foreach ($newValueParts as $part) {
+            // Split each part into column name and new value
+            $pair = explode("=", trim($part)); // trim to remove any leading/trailing whitespace
+            
+            // Add column name and new value to the SET clause
+            $setClause .= $pair[0] . " = " . $pair[1] . ", ";
+        }
+        // Remove the trailing comma and space
+        $setClause = rtrim($setClause, ", ");
+
+        // Construct and execute the SQL query
+        $stmt = $conn->prepare("UPDATE $tableName SET $setClause WHERE $condition");
+        $stmt->execute();
+        echo "Record(s) updated successfully.<br>";
+        
+        return true;
+    } catch (PDOException $e) {
+        // echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+?>
