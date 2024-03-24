@@ -33,7 +33,7 @@ try {
 
     if ($results) {
         foreach ($results as $row) {
-            $finalGrade = ($row['Test1'] * 0.2) + ($row['Test2'] * 0.2) + ($row['Test3'] * 0.3) + ($row['FinalExam'] * 0.4);
+            $finalGrade = ($row['Test1'] * 0.2) + ($row['Test2'] * 0.2) + ($row['Test3'] * 0.2) + ($row['FinalExam'] * 0.4);
 
             // Prepare insert statement for the FinalExamGradesCalculation table
             $insertSql = "INSERT INTO FinalExamGradesCalculation (StudentID, StudentName, CourseCode, FinalGrade) VALUES (:StudentID, :StudentName, :CourseCode, :FinalGrade)";
