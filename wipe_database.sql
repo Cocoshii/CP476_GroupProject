@@ -3,5 +3,5 @@
 -- may result in errors for inserting duplicate entries
 -- So this file ensures a fresh initialization to the database upon re-population.
 DROP TABLE IF EXISTS CourseTable; -- CourseTable must be dropped first since it has a foreign key attached to NameTable (studentID)
-DROP TABLE IF EXISTS FinalExamGradesCalculation;
+DROP TABLE IF EXISTS FinalGrades;
 DROP TABLE IF EXISTS NameTable;

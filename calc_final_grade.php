@@ -15,10 +15,10 @@ include("populate_database.php");
 ob_end_clean(); // stops blocking output
 
 try {
-    // Check if the FinalExamGradesCalculation table exists, drop if it does, and create a fresh one
+    // Check if the FinalGrades table exists, drop if it does, and create a fresh one
     $dropAndCreateTableSQL = "
-    DROP TABLE IF EXISTS FinalExamGradesCalculation;
-    CREATE TABLE FinalExamGradesCalculation (
+    DROP TABLE IF EXISTS FinalGrades;
+    CREATE TABLE FinalGrades (
         StudentID VARCHAR(9) NOT NULL,
         StudentName VARCHAR(100) NOT NULL,
         CourseCode VARCHAR(5) NOT NULL,
@@ -28,7 +28,7 @@ try {
     );";
 
     $conn->exec($dropAndCreateTableSQL);
-    // echo "FinalExamGradesCalculation table has been dropped and recreated.<br>"; // debug statement
+    // echo "FinalGrades table has been dropped and recreated.<br>"; // debug statement
 
     // Continue with the process of fetching grades and inserting them into the new table
     $sql = "SELECT n.StudentID, n.StudentName, c.CourseCode, c.Test1, c.Test2, c.Test3, c.FinalExam FROM NameTable n JOIN CourseTable c ON n.StudentID = c.StudentID";
@@ -41,8 +41,8 @@ try {
         foreach ($results as $row) {
             $finalGrade = ($row['Test1'] * 0.2) + ($row['Test2'] * 0.2) + ($row['Test3'] * 0.2) + ($row['FinalExam'] * 0.4);
 
-            // Prepare insert statement for the FinalExamGradesCalculation table
-            $insertSql = "INSERT INTO FinalExamGradesCalculation (StudentID, StudentName, CourseCode, FinalGrade) VALUES (:StudentID, :StudentName, :CourseCode, :FinalGrade)";
+            // Prepare insert statement for the FinalGrades table
+            $insertSql = "INSERT INTO FinalGrades (StudentID, StudentName, CourseCode, FinalGrade) VALUES (:StudentID, :StudentName, :CourseCode, :FinalGrade)";
             $insertStmt = $conn->prepare($insertSql);
             $insertStmt->execute([
                 ':StudentID' => $row['StudentID'],
@@ -58,7 +58,7 @@ try {
     }
 } catch (PDOException $e) {
     error_log($e->getMessage());
-    exit("Error occurred while handling the FinalExamGradesCalculation table or fetching/inserting data. Exiting program...");
+    exit("Error occurred while handling the FinalGrades table or fetching/inserting data. Exiting program...");
 }
 
 // CODE FOR VALIDATING USER INPUT
@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user en
         // echo $studentID . "<br>"; // debug statement
         $courseCode = trim((string) $_POST["courseCode"]);
         // echo $courseCode . "<br>"; // debug statement
-        $sql = "SELECT * FROM FinalExamGradesCalculation WHERE StudentID = '" . $studentID . "' AND CourseCode = '" . $courseCode . "'";
+        $sql = "SELECT * FROM FinalGrades WHERE StudentID = '" . $studentID . "' AND CourseCode = '" . $courseCode . "'";
         // echo $sql . "<br>"; // debug statement to view above query
         $stmt = $conn->query($sql); // if the entered student ID and course code exist in the course table then proceed with calculating the final grade
         if ($stmt->rowCount() == 0) // if the query results in an empty set however, then we cannot calculate the final grade. Display error to user.
@@ -104,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user en
 
 
 function retrieveFinalGrade($studentID, $courseCode, $conn){
-    $stmt = $conn->prepare("SELECT FinalGrade FROM FinalExamGradesCalculation WHERE StudentID=:studentID AND CourseCode=:courseCode");
+    $stmt = $conn->prepare("SELECT FinalGrade FROM FinalGrades WHERE StudentID=:studentID AND CourseCode=:courseCode");
     $stmt->execute([
         ':studentID' => $studentID,
         ':courseCode' => $courseCode
