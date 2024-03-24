@@ -14,52 +14,6 @@ include("connect_database.php");
 include("populate_database.php");
 ob_end_clean(); // stops blocking output
 
-try {
-    // Check if the FinalGrades table exists, drop if it does, and create a fresh one
-    $dropAndCreateTableSQL = "
-    DROP TABLE IF EXISTS FinalGrades;
-    CREATE TABLE FinalGrades (
-        StudentID VARCHAR(9) NOT NULL,
-        StudentName VARCHAR(100) NOT NULL,
-        CourseCode VARCHAR(5) NOT NULL,
-        FinalGrade FLOAT NOT NULL,
-        FOREIGN KEY(StudentID) REFERENCES NameTable(StudentID),
-        PRIMARY KEY(StudentID, CourseCode)
-    );";
-
-    $conn->exec($dropAndCreateTableSQL);
-    // echo "FinalGrades table has been dropped and recreated.<br>"; // debug statement
-
-    // Continue with the process of fetching grades and inserting them into the new table
-    $sql = "SELECT n.StudentID, n.StudentName, c.CourseCode, c.Test1, c.Test2, c.Test3, c.FinalExam FROM NameTable n JOIN CourseTable c ON n.StudentID = c.StudentID";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-
-    $results = $stmt->fetchAll();
-
-    if ($results) {
-        foreach ($results as $row) {
-            $finalGrade = ($row['Test1'] * 0.2) + ($row['Test2'] * 0.2) + ($row['Test3'] * 0.2) + ($row['FinalExam'] * 0.4);
-
-            // Prepare insert statement for the FinalGrades table
-            $insertSql = "INSERT INTO FinalGrades (StudentID, StudentName, CourseCode, FinalGrade) VALUES (:StudentID, :StudentName, :CourseCode, :FinalGrade)";
-            $insertStmt = $conn->prepare($insertSql);
-            $insertStmt->execute([
-                ':StudentID' => $row['StudentID'],
-                ':StudentName' => $row['StudentName'],
-                ':CourseCode' => $row['CourseCode'],
-                ':FinalGrade' => $finalGrade
-            ]);
-
-            // echo "Record inserted: StudentID - " . $row['StudentID'] . ", CourseCode - " . $row['CourseCode'] . ", Final Grade - " . $finalGrade . "<br>";
-        }
-    } else {
-        echo "No course records found.";
-    }
-} catch (PDOException $e) {
-    error_log($e->getMessage());
-    exit("Error occurred while handling the FinalGrades table or fetching/inserting data. Exiting program...");
-}
 
 // CODE FOR VALIDATING USER INPUT
 
@@ -73,12 +27,10 @@ $queryError = "";
 // Username and password fields cannot be left blank. Most values must also be valid.
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user end, run this code
-    // Username validation
     if (empty($_POST["studentID"]))  // if user submits while username field is empty
         $studentIDError = "Student ID cannot be left blank.";
 
-    // Password validation
-    if (empty($_POST["courseCode"])) // if user submits while password field is empty
+    if (empty($_POST["courseCode"])) // if user submits while course code field is empty
         $courseCodeError = "Course code cannot be left blank.";
 
     if (empty($studentIDError) && empty($courseCodeError)){
