@@ -29,11 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user en
     if (empty($_POST["password"])) // if user submits while password field is empty
         $passwordError = "Password is required";
 
-    if (empty($usernameError) && empty($passwordError)){
+    if (empty($usernameError) && empty($passwordError)) {
         // If values were entered, execute the validateLogin() function
         $username = $_POST["username"];
         $password = $_POST["password"];
-        if (validateLogin($username, $password) == true){
+        if (validateLogin($username, $password) == true) {
             $_SESSION["username"] = $username;
             $_SESSION["password"] = $password;
 
@@ -52,25 +52,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user en
         // header("Location: verifyLogin.php");
         // exit();
     }
-
 }
 
-function validateLogin($username, $password){
+function validateLogin($username, $password)
+{
     // Ensure that the provided user-provided username and password are valid MySQL entries that can connect to the database
     $dbName = "cp476_db";
     $dsn = "mysql:host=localhost;dbname=$dbName;charset=utf8mb4"; // cp476_db is the name of the database to connect to
     try {
         $conn = new PDO($dsn, $username, $password);
-    
     } catch (PDOException $e) {
         error_log($e->getMessage());
         // exit("Failed to login. Username or password incorrect.");
         return false;
-    
     }
 
     return true;
-
 }
 
 
@@ -78,32 +75,83 @@ function validateLogin($username, $password){
 
 <!-- LOGIN WEB USER INTERFACE: HTML -->
 
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="html_classes.css"> Link to CSS file 
+</head>
+
+<body>
+
+     Welcome heading 
+    <div class="centerText">
+        <h1>Welcome. Please login with your credentials:</h1>
+    </div>
+
+    User login inputs 
+
+    <form method="POST">
+
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username">
+        <span class="error" style="color:red;">* <?php //echo $usernameError; 
+                                                    ?></span><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password">
+        <span class="error" style="color:red;">* <?php //echo $passwordError; 
+                                                    ?></span><br>
+
+        <input type="submit" value="Submit">
+        <span class="error" style="color:red;">* <?php //echo $loginError; 
+                                                    ?></span><br>
+
+    </form>
+</body>
+
+</html> -->
+
 <!DOCTYPE html>
 <html>
+
 <head>
+    <meta charset="UTF-8">
+    <title>Login</title>
     <link rel="stylesheet" href="html_classes.css"> <!-- Link to CSS file -->
 </head>
 
 <body>
 
-<!-- Welcome heading -->
-<div class="centerText"><h1>Welcome. Please login with your credentials:</h1></div>
+    <div class="page-container">
+        <!-- Welcome heading -->
+        <div class="welcome-heading">
+            <h1>Welcome. Please login with your credentials:</h1>
+        </div>
 
-<!-- User login inputs -->
+        <!-- User login inputs -->
+        <form class="form-container" method="POST">
 
-<form method="POST">
+            <div>
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username">
+                <span class="error" style="color:red;">* <?php echo $usernameError; ?></span>
+            </div>
 
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username">
-    <span class="error" style="color:red;">* <?php echo $usernameError;?></span><br>
+            <div>
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password">
+                <span class="error" style="color:red;">* <?php echo $passwordError; ?></span>
+            </div>
 
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password">
-    <span class="error" style="color:red;">* <?php echo $passwordError;?></span><br>
+            <div>
+                <input type="submit" value="Submit" class="menu-button login">
+                <span class="error" style="color:red;">* <?php echo $loginError; ?></span>
+            </div>
 
-    <input type="submit" value="Submit">
-    <span class="error" style="color:red;">* <?php echo $loginError;?></span><br>
+        </form>
+    </div>
 
-</form>
 </body>
+
 </html>
