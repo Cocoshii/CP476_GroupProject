@@ -14,6 +14,7 @@ include("connect_database.php");
 // include("populate_database.php");
 ob_end_clean(); // stops blocking output
 
+include("navigation_bar.php");
 
 // Verify condition input
 
