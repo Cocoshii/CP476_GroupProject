@@ -7,13 +7,13 @@ DELETE FROM table_name
 WHERE condition;
 */
 
+session_start();
 
 ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
 include("connect_database.php");
-include("populate_database.php");
+// include("populate_database.php");
 ob_end_clean(); // stops blocking output
 
-session_start();
 
 // Verify condition input
 

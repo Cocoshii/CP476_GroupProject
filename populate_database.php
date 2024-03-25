@@ -5,6 +5,8 @@
 // The data is taken from NameFile.txt and CourseFile.txt
 // Located under the data folder of the project folder
 
+session_start();
+
 include("connect_database.php"); // connect to database before populating it
 
 $nameFile = fopen("data/NameFile.txt", "r");

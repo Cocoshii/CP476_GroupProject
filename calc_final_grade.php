@@ -6,12 +6,11 @@ the following: (test,1,2,3) 3x20% + (final exam) 40% = 100%.
 - All the grades should be decimal number with one digital after the dot.
 */
 
-// CODE FOR CREATING FINAL GRADES TABLE
+session_start();
 
-// require_once 'login.php'; // Include the login.php to use the established $conn PDO connection
 ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
 include("connect_database.php");
-include("populate_database.php");
+// include("populate_database.php");
 ob_end_clean(); // stops blocking output
 
 

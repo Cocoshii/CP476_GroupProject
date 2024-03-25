@@ -40,15 +40,15 @@ an alert saying the query is invalid, if the user enters their condition incorre
 // - https://stackoverflow.com/questions/31527781/printing-pdo-query-results
 // - https://www.w3schools.com/php/php_mysql_select.asp
 
-
+session_start();
 
 ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
 include("connect_database.php");
-include("populate_database.php");
+// include("populate_database.php");
 ob_end_clean(); // stops blocking output
 
-session_start();
 
+// $conn = $_SESSION["sqlConnection"];
 
 ?>
 

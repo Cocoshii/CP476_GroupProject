@@ -8,12 +8,13 @@ WHERE condition;
 
 */
 
+session_start();
+
 ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
 include("connect_database.php");
-include("populate_database.php");
+// include("populate_database.php");
 ob_end_clean(); // stops blocking output
 
-session_start();
 
 $setError = "";
 $conditionError = "";
@@ -112,21 +113,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user en
 
 function executeUpdate($tableName, $newValues, $condition, $conn){
     try {
-        // $colUpdates = explode(",", $newValues); // separates each individual column to be updated
-        // $setClause = "";
-        // $sql = "UPDATE $tableName SET ";
-        // $stmt = $conn->prepare($sql);
-
-        // // Construct the SET clause of the SQL query
-        // foreach ($colUpdates as $colUpdate) {
-        //     $colPair = explode("=", trim($colUpdate)); // trim to remove any leading/trailing whitespace
-
-        //     // Add column name and new value to the SET clause
-        //     $setClause .= $colPair[0] . " = :" . $colPair[0] . ", ";
-        //     $stmt->bindParam(":$colPair[0]", $colPair[1]);
-        // }
-        // $setClause = rtrim($setClause, ", "); // Removes the last comma and space added from the foreach loop
-        // $sql .= $setClause . " WHERE $condition";
         $sql = "UPDATE $tableName SET $newValues WHERE $condition";
         $stmt = $conn->prepare($sql);
 

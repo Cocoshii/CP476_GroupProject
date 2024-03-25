@@ -1,15 +1,17 @@
 <?php
-// Initiate login session
-// session_start();
-
 // Code re-engineering reference:
 // https://www.w3schools.com/php/php_form_required.asp <-- CITE THIS IN PROJECT REPORT
 // https://www.w3schools.com/html/html_forms.asp <-- CITE THIS IN PROJECT REPORT
 
-ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
-include("connect_database.php");
-include("populate_database.php");
-ob_end_clean(); // stops blocking output
+// Initiate login session
+session_start();
+
+$_SESSION["initialPopulation"] = false;
+
+// ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
+// include("connect_database.php");
+// include("populate_database.php");
+// ob_end_clean(); // stops blocking output
 
 // Error handling variables
 $usernameError = "";
@@ -32,7 +34,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user en
         $username = $_POST["username"];
         $password = $_POST["password"];
         if (validateLogin($username, $password) == true){
+            $_SESSION["username"] = $username;
+            $_SESSION["password"] = $password;
+
+            // Connect to database using valid credentials and populate it
+            ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
+            include("connect_database.php");
+            include("populate_database.php"); // at the moment, user actions on database are not saved across sessions
+            $_SESSION["initialPopulation"] = true; // we only want to populate the table once, upon user login
+            ob_end_clean(); // stops blocking output
+
             header("Location: homepage.html");
+            exit();
         } else {
             $loginError = "Failed to login. Username or password incorrect.";
         }
@@ -47,7 +60,6 @@ function validateLogin($username, $password){
     $dbName = "cp476_db";
     $dsn = "mysql:host=localhost;dbname=$dbName;charset=utf8mb4"; // cp476_db is the name of the database to connect to
     try {
-        // $conn = new PDO($dsn, $username, $password, $options);
         $conn = new PDO($dsn, $username, $password);
     
     } catch (PDOException $e) {
