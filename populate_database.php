@@ -77,7 +77,7 @@ try {
         StudentName VARCHAR(100) NOT NULL,
         CourseCode VARCHAR(5) NOT NULL,
         FinalGrade FLOAT NOT NULL,
-        FOREIGN KEY(StudentID) REFERENCES NameTable(StudentID),
+        FOREIGN KEY(StudentID) REFERENCES NameTable(StudentID) ON UPDATE CASCADE ON DELETE CASCADE,
         PRIMARY KEY(StudentID, CourseCode)
     );";
 
