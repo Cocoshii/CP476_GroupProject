@@ -11,22 +11,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CP476 Student Course Database</title>
     <link rel="stylesheet" href="html_classes.css"> <!-- Link to CSS file -->
 </head>
 
 <body>
-
-<!-- Welcome heading -->
-<div class="centerText"><h1>Welcome to the CP476 Student Course Database. Please select an action:</h1></div>
-
-<!-- <form action="http://localhost/handleLogin.php" method="POST">  -->
-<form method="POST">
-    <div class="menuButton"><button type="button" onclick="location.href = 'search_db_manual.php';">Search data entries</button></div><br>
-    <div class="menuButton"><button type="button" onclick="location.href = 'update_db.php';">Update data entries</button></div><br>
-    <div class="menuButton"><button type="button" onclick="location.href = 'delete_db.php';">Delete data entries</button></div><br>
-    <div class="menuButton"><button type="button" onclick="location.href = 'calc_final_grade.php';">Calculate student final grade</button></div><br>
-    <div class="menuButton"><button type="button" onclick="location.href = 'logout.php';">Logout</button></div><br>
-
-</form>
+    
+<div class="page-container">
+    <!-- Welcome heading -->
+    <div class="welcome-heading">
+        <h1>Welcome to the CP476 Student Course Database. Please select an action:</h1>
+    </div>
+    
+    <!-- <form action="http://localhost/handleLogin.php" method="POST">  -->
+    <form class="form-container" method="POST">
+        <button type="button" class="menu-button search" onclick="location.href = 'search_db_manual.php';">Search data entries</button>
+        <button type="button" class="menu-button update" onclick="location.href = 'update_db.php';">Update data entries</button>
+        <button type="button" class="menu-button delete" onclick="location.href = 'delete_db.php';">Delete data entries</button>
+        <button type="button" class="menu-button calculate" onclick="location.href = 'calc_final_grade.php';">Calculate student final grade</button>
+        <button type="button" class="menu-button logout" onclick="location.href = 'logout.php';">Logout</button>
+    </form>
+</div>
+    
 </body>
 </html>
