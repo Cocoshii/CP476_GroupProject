@@ -1,28 +1,56 @@
 /* Re-engineering reference: https://stackoverflow.com/questions/15300234/how-can-i-horizontally-center-a-button-element-in-a-div-element <- CITE */
 
 /* Class for centering text */
-.centerText {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #171D1C; /* Verdigris */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.page-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: #dbd9dd; /* Magnolia */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
-/* Class for centering buttons */
-button {
-    width: 500px;
-    height: 75px;
-    font-size: 20px;
-    text-align: center; /* Align text to the middle of each button */
-    /* Center position of buttons in middle of webpage */
-    margin:0 auto;
-    display:block;
+.welcome-heading h1 {
+    color: #171D1C; /* Eerie Black */
+    margin-bottom: 30px;
 }
 
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
-li a {
-    display: block;
-    width: 60px;
+.menu-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    color: #EFE9F4; /* Magnolia */
+}
+
+.menu-button.search { background-color: #171D1C; } /* Maya Blue */
+.menu-button.update { background-color: #171D1C; } /* Eerie Black */
+.menu-button.delete { background-color: #171D1C; } /* Neon Blue */
+.menu-button.calculate { background-color: #171D1C; } /* Verdigris */
+.menu-button.logout { background-color: #5863F8; } /* Maya Blue */
+
+.menu-button:hover {
+    transform: scale(1.05);
 }
