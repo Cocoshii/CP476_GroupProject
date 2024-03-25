@@ -75,43 +75,6 @@ function validateLogin($username, $password)
 
 <!-- LOGIN WEB USER INTERFACE: HTML -->
 
-<!-- <!DOCTYPE html>
-<html>
-
-<head>
-    <link rel="stylesheet" href="html_classes.css"> Link to CSS file 
-</head>
-
-<body>
-
-     Welcome heading 
-    <div class="centerText">
-        <h1>Welcome. Please login with your credentials:</h1>
-    </div>
-
-    User login inputs 
-
-    <form method="POST">
-
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username">
-        <span class="error" style="color:red;">* <?php //echo $usernameError; 
-                                                    ?></span><br>
-
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password">
-        <span class="error" style="color:red;">* <?php //echo $passwordError; 
-                                                    ?></span><br>
-
-        <input type="submit" value="Submit">
-        <span class="error" style="color:red;">* <?php //echo $loginError; 
-                                                    ?></span><br>
-
-    </form>
-</body>
-
-</html> -->
-
 <!DOCTYPE html>
 <html>
 
