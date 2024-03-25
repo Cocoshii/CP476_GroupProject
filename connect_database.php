@@ -10,7 +10,7 @@ PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an
 ];
 try {
     // $password = "put your MySQL password here"; // REPLACE WITH YOUR MYSQL PASSWORD BEFORE RUNNING FILE
-    $password = "C3u21t20e5<33"; // REPLACE WITH YOUR MYSQL PASSWORD BEFORE RUNNING FILE
+    $password = "put your password here"; // REPLACE WITH YOUR MYSQL PASSWORD BEFORE RUNNING FILE
     // Note: When editing this and committing changes, it's best to update $password back to a placeholder string
     // if you don't want others to see your password here.
 
