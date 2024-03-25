@@ -42,7 +42,7 @@ function insertData($data, $table, $conn){
         VALUES (:StudentID, :CourseCode, :Test1, :Test2, :Test3, :FinalExam)");
         foreach ($data as $row) {
             $stmt->bindParam(":StudentID", $row[0]);
-            $stmt->bindParam(":CourseCode", ltrim($row[1]);
+            $stmt->bindParam(":CourseCode", ltrim($row[1]));
             $stmt->bindParam(":Test1", $row[2]);
             $stmt->bindParam(":Test2", $row[3]);
             $stmt->bindParam(":Test3", $row[4]);

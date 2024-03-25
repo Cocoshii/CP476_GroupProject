@@ -42,7 +42,7 @@ WHERE (condition, manually typed in) -->
 
 <form method="POST">
 
-    <div class="centerText"><p style="font-size: 20px;">Please fill in the blank text field below to delete a data entry from the database:</p>
+    <div class="centerText"><p style="font-size: 20px;">Please fill in the blank text field below to update data entries from the database:</p>
     <!-- <p>DELETE FROM <span id="tableMenu"></span> WHERE <span id="condition"></span>.</p> -->
     Update operations are of the general form:<br>
     <b>UPDATE tableName<br>
@@ -112,29 +112,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user en
 
 function executeUpdate($tableName, $newValues, $condition, $conn){
     try {
-        // Split the newValues input into separate parts
-        $newValueParts = explode(",", $newValues);
+        // $colUpdates = explode(",", $newValues); // separates each individual column to be updated
+        // $setClause = "";
+        // $sql = "UPDATE $tableName SET ";
+        // $stmt = $conn->prepare($sql);
 
-        // Construct the SET clause of the SQL query
-        $setClause = "";
-        foreach ($newValueParts as $part) {
-            // Split each part into column name and new value
-            $pair = explode("=", trim($part)); // trim to remove any leading/trailing whitespace
-            
-            // Add column name and new value to the SET clause
-            $setClause .= $pair[0] . " = " . $pair[1] . ", ";
-        }
-        // Remove the trailing comma and space
-        $setClause = rtrim($setClause, ", ");
+        // // Construct the SET clause of the SQL query
+        // foreach ($colUpdates as $colUpdate) {
+        //     $colPair = explode("=", trim($colUpdate)); // trim to remove any leading/trailing whitespace
 
-        // Construct and execute the SQL query
-        $stmt = $conn->prepare("UPDATE $tableName SET $setClause WHERE $condition");
+        //     // Add column name and new value to the SET clause
+        //     $setClause .= $colPair[0] . " = :" . $colPair[0] . ", ";
+        //     $stmt->bindParam(":$colPair[0]", $colPair[1]);
+        // }
+        // $setClause = rtrim($setClause, ", "); // Removes the last comma and space added from the foreach loop
+        // $sql .= $setClause . " WHERE $condition";
+        $sql = "UPDATE $tableName SET $newValues WHERE $condition";
+        $stmt = $conn->prepare($sql);
+
+        // Execute the prepared statement
         $stmt->execute();
+        
         echo "Record(s) updated successfully.<br>";
         
         return true;
     } catch (PDOException $e) {
-        // echo "Error: " . $e->getMessage();
+        echo "$sql<br>";
+        echo "Error: " . $e->getMessage();
         return false;
     }
 }
