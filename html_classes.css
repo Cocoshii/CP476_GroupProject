@@ -3,7 +3,11 @@
 /* Class for centering text */
 body {
     font-family: Arial, sans-serif;
-    background-color: #171D1C; /* Verdigris */
+    /* background-color: #bdbdbd; /* Verdigris */
+    background-color: #ffffff; /* Verdigris */
+    /* Changing the homepage background back to white but retaining the new design so there's more aesthetic consistency
+    among the other pages */
+    
     margin: 0;
     padding: 0;
     display: flex;

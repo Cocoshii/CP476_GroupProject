@@ -41,6 +41,7 @@ an alert saying the query is invalid, if the user enters their condition incorre
 // - https://www.w3schools.com/php/php_mysql_select.asp
 
 session_start();
+$dbName = $_SESSION["dbName"];
 
 ob_start(); // Do not send any output to the web browser. This section is to initialize the database and initiate database connection
 include("connect_database.php");
@@ -49,8 +50,36 @@ ob_end_clean(); // stops blocking output
 
 include("navigation_bar.php");
 
+function getTableColumnNames($table, $dbName, $conn){
+    $tableCols = [];
+    $sql = "SELECT COLUMN_NAME 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_SCHEMA = '$dbName'
+        AND TABLE_NAME = '$table'";
 
-// $conn = $_SESSION["sqlConnection"];
+    $stmt = $conn->query($sql);
+    if ($stmt->rowCount() > 0) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            array_push($tableCols, $row["COLUMN_NAME"]);
+        }
+    } else {
+        echo "0 results";
+    }
+
+    return $tableCols;
+}
+
+function tableAttributeList($tableCols){
+    // Generates HTML Checkbox Inputs
+    $attributeList = "";
+    foreach ($tableCols as $attribute) {
+        // Replace 'name' attribute with the desired name for the checkboxes
+        $attributeList .= '<input type="checkbox" name="Table attributes" value="' . $attribute . '">';
+        $attributeList .= '<label>' . $attribute . '</label><br>'; // Label for each checkbox
+    }
+    return $attributeList;
+}
+
 
 ?>
 
@@ -71,21 +100,45 @@ include("navigation_bar.php");
 <form method="POST">
     <!-- Choose between simplified or manual mode user input mode: -->
     <div class="centerText"><label for="simplified" style="font-size: 20px;">Simplified input</label>
-    <input type="radio" onclick="location.href = 'search_NameTable.php';" id="simplified" name="simplified" value="Simplified">
+    <input type="radio" onclick="location.href = 'search_db_simplified.php';" id="simplified" name="simplified" value="Simplified" checked>
     <label for="manual" style="font-size: 20px;">Manual input</label>
-    <input type="radio" onclick="location.href = 'search_db_manual.php';" id="manual" name="manual" value="Manual" checked></div>
+    <input type="radio" onclick="location.href = 'search_db_manual.php';" id="manual" name="manual" value="Manual"></div>
 
-    <div class="centerText"><p style="font-size: 20px;">Queries are of the general form: SELECT tableAttribute FROM tableName WHERE condition<br>
-    Enter a query in the input text field below:</div></p>
-    <div class="centerText"><input type="text" id="query" name="query" size="100"></div><br>
-    <!-- <span class="error" style="color:red;">* <?php echo $usernameError;?></span><br> -->
+
+    <p>Table to search:
+    
+    <select name="tableMenu" id="tableMenu" onchange="location.href = this.value">
+    <option value="search_NameTable.php" selected>NameTable</option>
+    <option value="search_CourseTable.php">CourseTable</option>
+    <option value="search_FinalGrades.php">FinalGrades</option>
+    </select><br><br>
+
+    Table Attributes to search:<br>
+    <?php
+    $table = "NameTable";
+    $tableCols = getTableColumnNames($table, $dbName, $conn);
+    $attributeList = tableAttributeList($tableCols);
+    echo "<br>" . $attributeList;
+    ?>
+    
+    <!-- Insert attribute checkbox list here -->
+    <br>
+
+    Condition (optional):<br> <!-- Uses manual input due to the ambiguous nature of WHERE clauses -->
+    Conditions take on the general form: WHERE tableAttribute = value<br>
+    Click here for more information on WHERE clauses. <br>
+    <!-- Hyperlink this: https://www.w3schools.com/sql/sql_where.asp -->
+    <!-- Insert manual text input field here-->
+    <input type="text" id="query" name="query" size="50"><br>
+    </p>
 
     <div class="centerText"><input type="submit" value="Search" style="font-size: 20px;"></div>
-    <!-- <span class="error" style="color:red;">* <?php echo $loginError;?></span><br> -->
+    
 
 </form>
 </body>
 </html>
+
 
 <?php
 // The following query execution code below is placed below the above HTML code so that the table results

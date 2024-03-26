@@ -29,7 +29,7 @@ $deletionError = "";
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="html_classes.css"> <!-- Link to CSS file -->
+    <link rel="stylesheet" href="html_classes_text.css"> <!-- Link to CSS file -->
 </head>
 
 <body>

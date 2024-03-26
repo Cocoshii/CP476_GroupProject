@@ -78,6 +78,16 @@ If there's time, the interface will offer a dropdown menu for the course codes t
 <div class="centerText"><h1>Calculate Student Final Grade</h1></div>
 
 <form method="POST">
+    <!-- Choose between simplified or manual mode user input mode: -->
+    <div class="centerText"><label for="Calculate student final grade" style="font-size: 20px;">Calculate student final grade</label>
+    <input type="radio" onclick="location.href = 'calc_final_grade.php';" id="Calculate student final grade"
+    name="Calculate student final grade" value="Calculate student final grade" checked><br>
+
+    <label for="Show all student final grades" style="font-size: 20px;">Show all student final grades</label>
+    <input type="radio" onclick="location.href = 'final_grades_table.php';" id="Show all student final grades"
+    name="Show all student final grades" value="Show all student final grades"></div><br>
+
+
     <label for="studentID">Student ID:</label><br>
     <input type="text" id="studentID" name="studentID">
     <span class="error" style="color:red;">* <?php echo $studentIDError;?></span><br>

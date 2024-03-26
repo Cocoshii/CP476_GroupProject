@@ -29,7 +29,7 @@ li a {
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 16px;
+  padding: 14px 20px;
   text-decoration: none;
 }
 
@@ -52,7 +52,7 @@ li a:hover:not(.active) {
         <li><a href="search_db_manual.php">Search</a></li>
         <li><a href="update_db.php">Update</a></li>
         <li><a href="delete_db.php">Delete</a></li>
-        <li><a href="calc_final_grade.php">Calculate final grades</a></li>
+        <li><a href="calc_final_grade.php">Final grades</a></li>
     </ul>
 </nav>
 

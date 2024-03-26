@@ -3,6 +3,7 @@ session_start();
 
 // CODE FROM LECTURE SLIDE: WEEK 5 PART 2 (cite this in the project report I guess)
 $dbName = "cp476_db";
+$_SESSION["dbName"] = $dbName;
 $dsn = "mysql:host=localhost;dbname=cp476_db;charset=utf8mb4"; // cp476_db is the name of the database to connect to
 $options = [
 PDO::ATTR_EMULATE_PREPARES => false, // turn off emulation mode
