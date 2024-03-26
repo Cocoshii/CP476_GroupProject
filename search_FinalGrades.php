@@ -74,7 +74,7 @@ function tableAttributeList($tableCols){
     $attributeList = "";
     foreach ($tableCols as $attribute) {
         // Replace 'name' attribute with the desired name for the checkboxes
-        $attributeList .= '<input type="checkbox" name="Table attributes" value="' . $attribute . '">';
+        $attributeList .= '<input type="checkbox" name="selectedAttributes[]" value="' . $attribute . '">';
         $attributeList .= '<label>' . $attribute . '</label><br>'; // Label for each checkbox
     }
     return $attributeList;
@@ -105,15 +105,15 @@ function tableAttributeList($tableCols){
     <input type="radio" onclick="location.href = 'search_db_manual.php';" id="manual" name="manual" value="Manual"></div>
 
 
-    <p>Table to search:
+    <b><p>Table to search:</b>
     
-    <select name="tableMenu" id="tableMenu" onchange="location.href = this.value">
+    <select name="tableMenu[]" id="tableMenu" onchange="location.href = this.value">
     <option value="search_NameTable.php">NameTable</option>
     <option value="search_CourseTable.php">CourseTable</option>
     <option value="search_FinalGrades.php" selected>FinalGrades</option>
     </select><br><br>
 
-    Table Attributes to search:<br>
+    <b>Table Attributes to search:<br></b>
     <?php
     $table = "FinalGrades";
     $tableCols = getTableColumnNames($table, $dbName, $conn);
@@ -124,12 +124,15 @@ function tableAttributeList($tableCols){
     <!-- Insert attribute checkbox list here -->
     <br>
 
-    Condition (optional):<br> <!-- Uses manual input due to the ambiguous nature of WHERE clauses -->
-    Conditions take on the general form: WHERE tableAttribute = value<br>
+    Conditions take on the general form: tableAttribute = value<br>
     Click here for more information on WHERE clauses. <br>
+    NOTE: Do not include the 'WHERE' keyword in your conditional clause.<br>
+    Remember to add '' s around non-numeric values and StudentID values.<br>
+    <b>Condition (optional):<br></b> <!-- Uses manual input due to the ambiguous nature of WHERE clauses -->
+
     <!-- Hyperlink this: https://www.w3schools.com/sql/sql_where.asp -->
     <!-- Insert manual text input field here-->
-    <input type="text" id="query" name="query" size="50"><br>
+    <input type="text" id="condition" name="condition" size="50"><br>
     </p>
 
     <div class="centerText"><input type="submit" value="Search" style="font-size: 20px;"></div>
@@ -144,24 +147,37 @@ function tableAttributeList($tableCols){
 // The following query execution code below is placed below the above HTML code so that the table results
 // will be placed below the query input section.
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $selectedAttributes = isset($_POST["selectedAttributes"]) ? $_POST["selectedAttributes"] : [];
+    $condition = isset($_POST["condition"]) ? $_POST["condition"] : ""; // update condition if values were entered
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once query form is submitted on user end, run this code
-    // Gets the entire string inputted by the user in the text field and attempts to run the query
-    // Syntax errors are prevalant though with manual input. An alert will be issued to the user of incorrect syntax when this is occurs.
-    if (!empty($_POST["query"])){
-        try {
-            $sqlInput = $_POST["query"];
-            $stmt = $conn->query($sqlInput); // stmt --> "statement"
+    // Make SQL SELECT query statement, based on user input, by concatenating user input parts to query operators
+    $sql = "SELECT ";
+    if (empty($selectedAttributes))
+        $sql .= "*"; // if nothing was selected and no condition was entered, do a SELECT * FROM tableName by default
+    else 
+        $sql .= implode(", ", $selectedAttributes);
+    
+    $sql .= " FROM $table";
+    if (!empty($condition))
+        $sql .= " WHERE $condition";
+
+    // echo $sql . "<br>";
+    
+    // Execute SELECT statement
+    try {
+        $stmt = $conn->query($sql);
+        if ($stmt)
             showResults($stmt);
-
-        } catch(PDOException $e) {
-            // echo $sql . "\r\n" . $e->getMessage();
-            $errorMsg = "Incorrect query syntax. Please review your input and follow the provided query syntax.";
-            echo "<script>alert('$errorMsg');</script>";
-        }
+        else 
+            echo "No results found.";
+        
+    } catch(PDOException $e) { // Display alert if query failed
+        $errorMsg = "Incorrect query syntax. Please review your condition input and follow the provided query syntax.";
+        echo "<script>alert('$errorMsg');</script>";
     }
-
 }
+
 
 function showResults($stmt){ // show query results from a successful SELECT ... statement
     echo "<br>";
