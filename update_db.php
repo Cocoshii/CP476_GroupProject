@@ -17,9 +17,51 @@ ob_end_clean(); // stops blocking output
 
 include("navigation_bar.php");
 
+// Verify condition input
 $setError = "";
 $conditionError = "";
 $updateError = "";
+$updateStatus = null;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user end, run this code
+    if (empty($_POST["newValues"]))  // if user submits while SET field is empty
+        $setError = "SET input field is required.";
+
+    if (empty($_POST["condition"])) // if user submits while WHERE field is empty
+        $conditionError = "WHERE input field is required";
+
+    if (empty($setError) && empty($conditionError)){
+        // If values were entered, execute the executeUpdate() function
+        $tableName = $_POST["tableMenu"];
+        $newValues = $_POST["newValues"];
+        $condition = $_POST["condition"];
+        $updateStatus = executeUpdate($tableName, $newValues, $condition, $conn);
+        if ($updateStatus == false) // if entry/entries deletion was unsuccessful...
+            $updateError = "Failed to update. Please review your syntax as well as the existence of the entered attributes and values.";
+     
+        // header("Location: verifyLogin.php");
+        // exit();
+    }
+
+}
+
+function executeUpdate($tableName, $newValues, $condition, $conn){
+    try {
+        $sql = "UPDATE $tableName SET $newValues WHERE $condition";
+        $stmt = $conn->prepare($sql);
+
+        // Execute the prepared statement
+        $stmt->execute();
+        
+        // echo "Record(s) updated successfully.<br>";
+        
+        return true;
+    } catch (PDOException $e) {
+        // echo "$sql<br>";
+        // echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
 
 ?>
 
@@ -54,7 +96,8 @@ WHERE (condition, manually typed in) -->
     For example:<br>
     <b>UPDATE FinalGrades<br>
     SET FinalGrade = 69.3<br>
-    WHERE studentID = 123456789</b><br>
+    WHERE studentID = '123456789'<br>
+    Remember to add single quotes (') s around non-numeric values and StudentID values.</b><br>
     </div></p><br>
 
     <p>UPDATE
@@ -85,49 +128,10 @@ WHERE (condition, manually typed in) -->
 
 <?php
 
-// Verify condition input
-$setError = "";
-$conditionError = "";
-$updateError = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user end, run this code
-    if (empty($_POST["newValues"]))  // if user submits while SET field is empty
-        $setError = "SET input field is required.";
+if ($updateStatus) // if final grade has been calculated (is not null)
+    echo "Record(s) updated successfully.<br>";
 
-    if (empty($_POST["condition"])) // if user submits while WHERE field is empty
-        $conditionError = "WHERE input field is required";
 
-    if (empty($setError) && empty($conditionError)){
-        // If values were entered, execute the executeUpdate() function
-        $tableName = $_POST["tableMenu"];
-        $newValues = $_POST["newValues"];
-        $condition = $_POST["condition"];
-        $updateStatus = executeUpdate($tableName, $newValues, $condition, $conn);
-        if ($updateStatus == false) // if entry/entries deletion was unsuccessful...
-            $updateError = "Failed to update. Please review your syntax as well as the existence of the entered attributes and values.";
-     
-        // header("Location: verifyLogin.php");
-        // exit();
-    }
-
-}
-
-function executeUpdate($tableName, $newValues, $condition, $conn){
-    try {
-        $sql = "UPDATE $tableName SET $newValues WHERE $condition";
-        $stmt = $conn->prepare($sql);
-
-        // Execute the prepared statement
-        $stmt->execute();
-        
-        echo "Record(s) updated successfully.<br>";
-        
-        return true;
-    } catch (PDOException $e) {
-        echo "$sql<br>";
-        echo "Error: " . $e->getMessage();
-        return false;
-    }
-}
 
 ?>

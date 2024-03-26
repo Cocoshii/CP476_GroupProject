@@ -49,7 +49,7 @@ li a:hover:not(.active) {
 <nav>
     <ul>
         <li><a href="homepage.html">Home</a></li>
-        <li><a href="search_db_manual.php">Search</a></li>
+        <li><a href="search_NameTable.php">Search</a></li>
         <li><a href="update_db.php">Update</a></li>
         <li><a href="delete_db.php">Delete</a></li>
         <li><a href="calc_final_grade.php">Final grades</a></li>

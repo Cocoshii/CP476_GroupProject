@@ -20,6 +20,47 @@ include("navigation_bar.php");
 
 $conditionError = "";
 $deletionError = "";
+$deletionStatus = null;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user end, run this code
+    if (empty($_POST["condition"]))  // if user submits while condition field is empty
+        $conditionError = "Condition is required to prevent deletion of all records from the table. Please enter a deletion condition.";
+
+    if (empty($conditionError)) {
+        // If values were entered, run executeDeletion() function
+        $tableName = $_POST["tableMenu"];
+        $condition = $_POST["condition"];
+        $deletionStatus = executeDeletion($tableName, $condition, $conn);
+        if ($deletionStatus == false) // if entry/entries deletion was unsuccessful...
+            $deletionError = "Failed to delete. Please review your syntax as well as the existence of the entered attributes and values.";
+        
+        // header("Location: verifyLogin.php");
+        // exit();
+    }
+
+}
+
+function executeDeletion($tableName, $condition, $conn){
+    try {
+        $stmt = $conn->prepare("DELETE FROM $tableName WHERE $condition");
+        $stmt->execute();
+        // echo "Record(s) deleted successfully.<br>";
+
+        // Inform the user of how many records were deleted from the operation <-- for some reason the code below always says no records were deleted.
+        // needs fixing, but the deletion functionality is still operating quickly otherwise.
+
+        // $recordsAffected = $stmt->rowCount();
+        // if ($recordsAffected == 0) 
+        //     echo "No records matched the deletion condition. No records were deleted.<br>";
+        // else 
+        //     echo "$stmt->rowCount() record(s) deleted successfully.<br>";
+        
+        return true;
+    } catch (PDOException $e) {
+        // echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
 
 ?>
 
@@ -45,7 +86,8 @@ DELETE FROM (dropdown menu of existing table names) WHERE (condition, manually t
     <div class="centerText"><p style="font-size: 20px;">Please fill in the blank text field below to delete a data entry from the database:</div></p>
     <!-- <p>DELETE FROM <span id="tableMenu"></span> WHERE <span id="condition"></span>.</p> -->
     <div class="centerText"><p style="font-size: 20px;">Delete operations are of the general form: DELETE FROM tableName WHERE condition<br>
-    For example: DELETE FROM NameTable WHERE studentID = 123456789</div></p><br>
+    For example: DELETE FROM NameTable WHERE studentID = '123456789'<br>
+    Remember to add single quotes (') s around non-numeric values and StudentID values.</div></p><br>
     <div class="centerText"><p>DELETE FROM
 
     <select name="tableMenu" id="tableMenu">
@@ -69,50 +111,9 @@ DELETE FROM (dropdown menu of existing table names) WHERE (condition, manually t
 </html>
 
 <?php
-// Verify condition input
 
-$conditionError = "";
-$deletionError = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Once form is submitted on user end, run this code
-    if (empty($_POST["condition"]))  // if user submits while condition field is empty
-        $conditionError = "Condition is required to prevent deletion of all records from the table. Please enter a deletion condition.";
-
-    if (empty($conditionError)) {
-        // If values were entered, run executeDeletion() function
-        $tableName = $_POST["tableMenu"];
-        $condition = $_POST["condition"];
-        $deletionStatus = executeDeletion($tableName, $condition, $conn);
-        if ($deletionStatus == false) // if entry/entries deletion was unsuccessful...
-            $deletionError = "Failed to delete. Please review your syntax as well as the existence of the entered attributes and values.";
-        
-        // header("Location: verifyLogin.php");
-        // exit();
-    }
-
-}
-
-function executeDeletion($tableName, $condition, $conn){
-    try {
-        $stmt = $conn->prepare("DELETE FROM $tableName WHERE $condition");
-        $stmt->execute();
-        echo "Record(s) deleted successfully.<br>";
-
-        // Inform the user of how many records were deleted from the operation <-- for some reason the code below always says no records were deleted.
-        // needs fixing, but the deletion functionality is still operating quickly otherwise.
-
-        // $recordsAffected = $stmt->rowCount();
-        // if ($recordsAffected == 0) 
-        //     echo "No records matched the deletion condition. No records were deleted.<br>";
-        // else 
-        //     echo "$stmt->rowCount() record(s) deleted successfully.<br>";
-        
-        return true;
-    } catch (PDOException $e) {
-        // echo "Error: " . $e->getMessage();
-        return false;
-    }
-}
+if ($deletionStatus) // if final grade has been calculated (is not null)
+    echo "Record(s) deleted successfully.<br>";
 
 
 ?>

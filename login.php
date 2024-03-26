@@ -77,33 +77,51 @@ function validateLogin($username, $password){
 ?>
 
 <!-- LOGIN WEB USER INTERFACE: HTML -->
+<!-- 
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="html_classes_text.css">  Link to CSS file -->
+<!-- </head> -->
 
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="html_classes_text.css"> <!-- Link to CSS file -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>CP476 Student Course Database</title> -->
+    <link rel="stylesheet" href="html_classes.css"> <!-- Link to CSS file -->
+
+
+    <!-- Welcome heading -->
+    <!-- <div class="centerText"><h1>Welcome. Please login with your MySQL credentials:</h1></div> -->
+
 </head>
 
 <body>
-
-<!-- Welcome heading -->
-<div class="centerText"><h1>Welcome. Please login with your credentials:</h1></div>
-
 <!-- User login inputs -->
+
+<div class="page-container">
+    <div class="welcome-heading">
+        <h1>Welcome. Please login with your MySQL credentials:</h1>
+    </div>
+
 
 <form method="POST">
 
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username">
-    <span class="error" style="color:red;">* <?php echo $usernameError;?></span><br>
+    <span class="error" style="color:red;">* <?php echo $usernameError;?></span><br><br>
 
     <label for="password">Password:</label><br>
     <input type="password" id="password" name="password">
-    <span class="error" style="color:red;">* <?php echo $passwordError;?></span><br>
+    <span class="error" style="color:red;">* <?php echo $passwordError;?></span><br><br>
 
-    <input type="submit" value="Submit">
+    <input type="submit" value="Login">
     <span class="error" style="color:red;">* <?php echo $loginError;?></span><br>
 
 </form>
+</div>
+
 </body>
 </html>

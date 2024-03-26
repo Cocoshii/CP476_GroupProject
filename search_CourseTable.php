@@ -125,9 +125,9 @@ function tableAttributeList($tableCols){
     <br>
 
     Conditions take on the general form: tableAttribute = value<br>
-    Click here for more information on WHERE clauses. <br>
+    Click <a href="https://www.w3schools.com/sql/sql_where.asp">here</a> for more information on WHERE clauses. <br>
     NOTE: Do not include the 'WHERE' keyword in your conditional clause.<br>
-    Remember to add '' s around non-numeric values and StudentID values.<br>
+    Remember to add single quotes (') s around non-numeric values and StudentID values.<br>
     <b>Condition (optional):<br></b> <!-- Uses manual input due to the ambiguous nature of WHERE clauses -->
 
     <!-- Hyperlink this: https://www.w3schools.com/sql/sql_where.asp -->

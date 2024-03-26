@@ -1,6 +1,11 @@
 /* Re-engineering reference: https://stackoverflow.com/questions/15300234/how-can-i-horizontally-center-a-button-element-in-a-div-element <- CITE */
 
 /* Class for centering text */
+.centerText {
+    text-align: center;
+    margin-top: 20px; /* Adjust as needed for vertical spacing */
+}
+
 body {
     font-family: Arial, sans-serif;
     /* background-color: #bdbdbd; /* Verdigris */
@@ -28,7 +33,7 @@ body {
 
 .welcome-heading h1 {
     color: #171D1C; /* Eerie Black */
-    margin-bottom: 30px;
+     margin-bottom: 30px;
 }
 
 .form-container {
